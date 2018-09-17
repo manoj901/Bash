@@ -17,11 +17,11 @@
 			* It is able to create background processess
 			* A command 'pinfo' , which provides information about a process when its 
 			  pid is passed as an argument to it
-			```
+			
 			Ex: <Name@UBUNTU:~>pinfo 7777
 				pid -- 7777
 				Process Status -- {R/S/S+/Z} memory
 				- 123123 {Virtual Memory}
 				- Executable Path — /usr/bin/gcc
-			```
+			
 			* Notifies user when a background process terminates
