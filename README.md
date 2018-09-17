@@ -15,7 +15,8 @@
 			* Builtins like cd, pwd ,echo have been coded
 			* It is able to handle ls [al] commands , which have been implemented
 			* It is able to create background processess
-			* A command 'pinfo' , which provides information about a process when its pid is passed as an argument to it
+			* A command 'pinfo' , which provides information about a process when its 
+			  pid is passed as an argument to it
 			```
 			Ex: <Name@UBUNTU:~>pinfo 7777
 				pid -- 7777
