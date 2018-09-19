@@ -6,40 +6,45 @@
 #include "sys/types.h"
 #include<string.h>
 int PID , VAL;
-void handler(int sig)
-{
-  pid_t pid;
-  pid = wait(NULL);
-  if(pid!=-1) {
-  	VAL = 1;
-  	PID = pid;
-  }
-   printf("\nprocess with pid %d exited normally.\n", pid);
-  return;
+void child_checking( ){
+	pid_t w_pid;
+	int status;
+	w_pid = waitpid(-1,&status,WNOHANG);
+
+	if(w_pid > 0 && WIFEXITED(status)==1)
+		printf("\nProcess brexited normally with pid:%d\n",w_pid);
+	if(w_pid > 0 && WIFSIGNALED(status)==1)
+		printf("\nProcess exited due to a signal generated with pid:%d\n",w_pid);
+	//fprintf(stderr,"a");
 }
 
 int lsh_launch(char **args)
 {
 	pid_t pid;
 	int status;
-	signal(SIGCHLD, handler);
 
 	int lo = 0,flag = 0;
 	while(args[lo]!=NULL)
 	lo++;
-	if(args[lo-1][strlen(args[lo-1])-1]=='&') {
-	flag = 1;
-	args[lo-1][strlen(args[lo-1])-1]='\0'; }
+	if(lo==0)
+	return 1;
+	 if(strcmp(args[lo-1],"&")==0){
+        flag = 1;
+        args[lo-1]=NULL;
+        lo--;
+    }
 	
-
+	//fprintf(stderr,"b");
 	pid = fork();
+	
 	if(pid==0) {
 		if(ashExecute(args)==0); else
 		if(execvp(args[0],args) == -1) {
 			perror("bash");
 		}
-		if(VAL==1)
-	 	printf("\n[%d] done.\n", PID);
+		if(!flag)
+		    setpgid(0,0);
+	//	fprintf(stderr,"c");
 		exit(EXIT_FAILURE);
 	} else if (pid<0) {
 		perror("bash");
@@ -47,11 +52,14 @@ int lsh_launch(char **args)
 		if(!flag) {
 		do{
 			waitpid(pid,&status,WUNTRACED);
+	//		fprintf(stderr,"d");
 		} while(!WIFEXITED(status) && !WIFSIGNALED(status));
 		} else {
-			waitpid(pid,&status,WNOHANG);
+			signal(SIGCHLD,child_checking);
+	//		fprintf(stderr,"f");
 		}
 	}
 
+	//fprintf(stderr,"g");
 	return 1;
 }

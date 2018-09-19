@@ -11,6 +11,7 @@ int lsh_execute(char **args)
 	
 	if(ashExecute(args)==0)
 	return 1;
+	//fprintf(stderr,"A");
 
 	return lsh_launch(args);
 }

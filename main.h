@@ -12,6 +12,7 @@ int lsh_cd(char **args);
 int lsh_echo(char **args);
 int lsh_ls(char **args);
 void lsh_pinfo(char **args);
+void child_checking( );
 int bgcount;
 int PID , VAL;
 typedef struct process {

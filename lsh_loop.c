@@ -34,10 +34,13 @@ void lsh_loop()
 		printf(ANSI_COLOR_RED"> "ANSI_COLOR_RESET);
 		//take the input
 		line = lsh_read_line();
+		//fprintf(stderr,"1");
 		//split the line using linebreakers into commands to execute
 		args = lsh_split_line(line);
+		//fprintf(stderr,"2");
 		//execute them 
 		stat = lsh_execute(args);
+		//fprintf(stderr,"3");
 
 		//free the space
 		free(line);
